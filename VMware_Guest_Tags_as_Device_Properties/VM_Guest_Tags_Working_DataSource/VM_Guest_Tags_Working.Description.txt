@@ -1,0 +1,5 @@
+by Stefan Wuensch, 2022-05-02. 
+
+Watch the Device Property "auto.vmware.ad.vm.mode" which should always be value "full" for VM Guest Tags to be assigned as Instance Level Properties. 
+
+Alert to Critical if the value is not "full".

@@ -1,0 +1,5 @@
+by Stefan Wuensch, October 2020. 
+
+Take VMware Guest Tags from vCenter Instances and apply them as Properties to the VM monitored Resource. 
+
+See detailed notes about usage and requirements in the Groovy script.
