@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<feed  version="1.0" hasPendingRequests="false" >
+  <company></company>
+  <status>200</status>
+  <errmsg>OK</errmsg>
+  <interval>0</interval>
+    <entry type="predatasource">
+        <version>1674061971</version>
+        <name>HUIT_VM_Guest_Tags_Working</name>
+        <displayedas>HUIT_VM_Guest_Tags_Working</displayedas>
+        <description>by Stefan Wuensch, 2022-05-02. Watch the Device Property &#34;auto.vmware.ad.vm.mode&#34; which should always be value &#34;full&#34; for VM Guest Tags to be assigned as Instance Level Properties. Alert to Critical if the value is not &#34;full&#34;.</description>
+        <collector>datapump</collector>
+        <hasMultiInstances>false</hasMultiInstances>
+        <useWildValueAsUniqueIdentifier>false</useWildValueAsUniqueIdentifier>
+        <schedule>180</schedule>
+        <appliesTo>system.virtualization =~ &#34;VMware ESX vcenter&#34;</appliesTo>
+        <wildcardauto>false</wildcardauto>
+        <wildcardpersist>false</wildcardpersist>
+        <wildcardlinuxscript></wildcardlinuxscript>
+        <wildcardlinuxcmdline></wildcardlinuxcmdline>
+        <wildcardwinscript></wildcardwinscript>
+        <wildcardwincmdline></wildcardwincmdline>
+        <wildcardgroovyscript></wildcardgroovyscript>
+        <wildcardschedule>1440</wildcardschedule>
+        <wildcarddisable>false</wildcarddisable>
+        <wildcarddeleteinactive>false</wildcarddeleteinactive>
+        <agdmethod>none</agdmethod>
+        <agdparams></agdparams>
+        <group>HUIT Tools Development</group>
+        <tags></tags>
+        <technology>This DataSource verifies that LogicMonitor is configured properly so that the PropertySource &#34;HUIT_VMware_Tags&#34; will work. The Instance Level Properties on VM Guests (which come from VMware Guest Tags in vCenter) will not be created unless &#34;auto.vmware.ad.vm.mode&#34; is &#34;full&#34; on the vCenter server Resource in LM.</technology>
+        <adlist><![CDATA[{"agdmethod":"none","agdparams":"","id":0,"filters":[],"params":{}}]]></adlist>
+        <schemaVersion>2</schemaVersion>
+        <dataSourceType>1</dataSourceType>
+        <attributes>
+        </attributes>
+        <datapoints>
+        <datapoint>
+            <name>auto_vmware_ad_vm_mode</name>
+            <originId>jFPUBd-qTfmiW41S6Uhfhg</originId>
+            <dataType>7</dataType>
+            <type>2</type>
+            <postprocessormethod>groovy</postprocessormethod>
+            <postprocessorparam>String mode = taskProps.get( &#34;auto.vmware.ad.vm.mode&#34; ) ?: &#34;unknown&#34;
+
+switch ( mode ) {
+
+    case &#34;full&#34;: 
+        return( 0 )
+        break
+
+    case &#34;light&#34;: 
+        return( 1 )
+        break
+
+    case &#34;unknown&#34;: 
+        return( 2 )
+        break
+    
+}
+
+return( 2 ) // In case something goes wrong, instead of using a &#34;default&#34; case.</postprocessorparam>
+            <usevalue></usevalue>
+            <alertexpr>= 2 2 1</alertexpr>
+            <alertmissing>3</alertmissing>
+            <alertsubject></alertsubject>
+            <alertbody></alertbody>
+            <enableanomalyalertsuppression></enableanomalyalertsuppression>
+            <adadvsettingenabled>false</adadvsettingenabled>
+            <warnadadvsetting></warnadadvsetting>
+            <erroradadvsetting></erroradadvsetting>
+            <criticaladadvsetting></criticaladadvsetting>
+            <description>Monitor the Device Property &#34;auto.vmware.ad.vm.mode&#34; and Alert:
+ Critical (metric 1) if Property value is &#34;light&#34;;
+ Error if Property is not set, or if there&#39;s a problem in the code.
+ Metric value 0 (zero) is normal / OK meaning Property value is &#34;full&#34;.</description>
+            <maxvalue></maxvalue>
+            <minvalue></minvalue>
+            <userparam1></userparam1>
+            <userparam2></userparam2>
+            <userparam3></userparam3>
+            <iscomposite>false</iscomposite>
+            <rpn></rpn>
+            <alertTransitionIval>1</alertTransitionIval>
+            <alertClearTransitionIval>0</alertClearTransitionIval>
+        </datapoint>
+        </datapoints>
+        <graphs>
+        <graph>
+            <name>Property Set Correctly?</name>
+            <title>Property Set Correctly?</title>
+            <originId></originId>            <verticallabel>Status (0=OK, 1=Critical, 2=Error)</verticallabel>
+            <rigid>false</rigid>
+            <maxvalue>3.0</maxvalue>
+            <minvalue>-1.0</minvalue>
+            <displayprio>1</displayprio>
+            <timescale>1day</timescale>
+            <base1024>false</base1024>
+            <graphdatapoints>
+        <graphdatapoint>
+            <name>mode</name>
+            <datapointname>auto_vmware_ad_vm_mode</datapointname>
+            <originId></originId>
+            <cf>1</cf>
+        </graphdatapoint>
+            </graphdatapoints>
+            <graphvirtualdatapoints>
+        <graphvirtualdatapoint>
+            <name>green</name>
+            <rpn>if( eq( mode, 0 ), 0-1, unkn() )</rpn>
+            <originId></originId>
+        </graphvirtualdatapoint>
+        <graphvirtualdatapoint>
+            <name>orange</name>
+            <rpn>if( and( gt( mode, 1 ), le( mode, 2 )), 2, unkn() )</rpn>
+            <originId></originId>
+        </graphvirtualdatapoint>
+        <graphvirtualdatapoint>
+            <name>red</name>
+            <rpn>if( and( gt( mode, 0 ), le( mode, 1 )), 1, unkn() )</rpn>
+            <originId></originId>
+        </graphvirtualdatapoint>
+            </graphvirtualdatapoints>
+            <graphdatas>
+            <graphdata>
+                <type>1</type>
+                <legend>Status (Zero is OK)</legend>
+                <color>gray</color>
+                <datapointname>mode</datapointname>
+                <isvirtualdatapoint>false</isvirtualdatapoint>
+            </graphdata>
+            <graphdata>
+                <type>2</type>
+                <legend>OK (Ignore &#34;-1&#34; value. It&#39;s artificial to force green on graph)</legend>
+                <color>olive</color>
+                <datapointname>green</datapointname>
+                <isvirtualdatapoint>true</isvirtualdatapoint>
+            </graphdata>
+            <graphdata>
+                <type>2</type>
+                <legend>Critical - Property is not &#34;full&#34;</legend>
+                <color>red</color>
+                <datapointname>red</datapointname>
+                <isvirtualdatapoint>true</isvirtualdatapoint>
+            </graphdata>
+            <graphdata>
+                <type>2</type>
+                <legend>Error - Something went wrong</legend>
+                <color>orange2</color>
+                <datapointname>orange</datapointname>
+                <isvirtualdatapoint>true</isvirtualdatapoint>
+            </graphdata>
+            </graphdatas>
+        </graph>
+        </graphs>
+        <overviewgraphs>
+        </overviewgraphs>
+        <scripts>
+        </scripts>
+    </entry>
+</feed>
